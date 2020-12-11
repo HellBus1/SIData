@@ -5,8 +5,16 @@
  */
 package sidata;
 
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.event.*;
-import javax.swing.JLabel;
+import javax.swing.*;
+import sidata.panel.ViewAssignmentPanel;
+import sidata.panel.ViewDataMasterPanel;
+import sidata.panel.ViewOperatorPanel;
+import sidata.panel.ViewProfilePanel;
+import sidata.panel.ViewReportPanel;
 
 /**
  *
@@ -14,17 +22,24 @@ import javax.swing.JLabel;
  */
 public class MainPage extends javax.swing.JFrame {
 
+//    ViewOperatorPanel viewOperatorPanel;
+//    ViewDataMasterPanel viewDataMasterPanel;
+//    ViewAssignmentPanel viewAssignmentPanel;
+//    ViewReportPanel viewReportPanel;
+//    ViewProfilePanel viewProfilePanel;
+    private String currentPanel;
+    
     /**
      * Creates new form MainPage
      */
     public MainPage() {
 //        initComponents();
-        myCustomComponents();
+        myCustomInitComponents();
     }
     
-    private void myCustomComponents(){
+    private void myCustomInitComponents(){
         
-        SideBar = new javax.swing.JPanel();
+        sideBar = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         createReport = new javax.swing.JLabel();
         viewReport = new javax.swing.JLabel();
@@ -34,13 +49,14 @@ public class MainPage extends javax.swing.JFrame {
         viewProfile = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
-        MainPage = new javax.swing.JPanel();
+        mainPage = new javax.swing.JPanel();
+        this.setResizable(false);
         
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        SideBar.setBackground(new java.awt.Color(102, 102, 102));
-        SideBar.setForeground(new java.awt.Color(102, 102, 102));
+        sideBar.setBackground(new java.awt.Color(102, 102, 102));
+        sideBar.setForeground(new java.awt.Color(102, 102, 102));
 
         jLabel2.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
@@ -80,7 +96,7 @@ public class MainPage extends javax.swing.JFrame {
             
             @Override
             public void mouseClicked(MouseEvent me){
-                System.out.println("clicked");
+                removePanel("View Report");
             }
         });
 
@@ -99,7 +115,7 @@ public class MainPage extends javax.swing.JFrame {
             
             @Override
             public void mouseClicked(MouseEvent me){
-                System.out.println("clicked");
+                removePanel("View Operator");
             }
         });
 
@@ -118,12 +134,12 @@ public class MainPage extends javax.swing.JFrame {
             
             @Override
             public void mouseClicked(MouseEvent me){
-                System.out.println("clicked");
+                removePanel("View Assignment");
             }
         });
 
         viewData.setForeground(new java.awt.Color(255, 255, 255));
-        viewData.setText("View Data");
+        viewData.setText("View Data Master");
         viewData.addMouseListener(new MouseAdapter(){
             @Override
             public void mouseEntered(MouseEvent me) {
@@ -137,7 +153,7 @@ public class MainPage extends javax.swing.JFrame {
             
             @Override
             public void mouseClicked(MouseEvent me){
-                System.out.println("clicked");
+                removePanel("View Data Master");
             }
         });
 
@@ -156,7 +172,7 @@ public class MainPage extends javax.swing.JFrame {
             
             @Override
             public void mouseClicked(MouseEvent me){
-                System.out.println("clicked");
+                removePanel("View Profile");
             }
         });
 
@@ -166,8 +182,8 @@ public class MainPage extends javax.swing.JFrame {
         jLabel1.setText("SIData");
 
 
-        javax.swing.GroupLayout SideBarLayout = new javax.swing.GroupLayout(SideBar);
-        SideBar.setLayout(SideBarLayout);
+        javax.swing.GroupLayout SideBarLayout = new javax.swing.GroupLayout(sideBar);
+        sideBar.setLayout(SideBarLayout);
         SideBarLayout.setHorizontalGroup(
             SideBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(SideBarLayout.createSequentialGroup()
@@ -193,7 +209,7 @@ public class MainPage extends javax.swing.JFrame {
                 .addComponent(jLabel2)
                 .addGap(18, 18, 18)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(11, 11, 11)
+                .addGap(18, 18, 18)
                 .addComponent(createReport)
                 .addGap(18, 18, 18)
                 .addComponent(viewReport)
@@ -201,23 +217,23 @@ public class MainPage extends javax.swing.JFrame {
                 .addComponent(viewOperator)
                 .addGap(18, 18, 18)
                 .addComponent(viewAssignment)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(viewData)
                 .addGap(18, 18, 18)
                 .addComponent(viewProfile)
                 .addContainerGap(187, Short.MAX_VALUE))
         );
 
-        MainPage.setBackground(new java.awt.Color(255, 255, 255));
+        mainPage.setBackground(new java.awt.Color(255, 255, 255));
 
-        javax.swing.GroupLayout MainPageLayout = new javax.swing.GroupLayout(MainPage);
-        MainPage.setLayout(MainPageLayout);
-        MainPageLayout.setHorizontalGroup(
-            MainPageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 821, Short.MAX_VALUE)
+        javax.swing.GroupLayout mainPageLayout = new javax.swing.GroupLayout(mainPage);
+        mainPage.setLayout(mainPageLayout);
+        mainPageLayout.setHorizontalGroup(
+            mainPageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 836, Short.MAX_VALUE)
         );
-        MainPageLayout.setVerticalGroup(
-            MainPageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        mainPageLayout.setVerticalGroup(
+            mainPageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
@@ -226,15 +242,14 @@ public class MainPage extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(SideBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(sideBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(1, 1, 1)
-                .addComponent(MainPage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(mainPage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(SideBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(MainPage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(sideBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(mainPage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -247,6 +262,110 @@ public class MainPage extends javax.swing.JFrame {
     private void changeWhenRelease(JLabel label){
         label.setForeground(new java.awt.Color(255, 255, 255));
     }
+    
+    private void removePanel(String toPanel) {
+        Container context = this.getContentPane();
+        
+//        viewOperatorPanel = new ViewOperatorPanel();
+//        viewDataMasterPanel = new ViewDataMasterPanel();
+//        viewAssignmentPanel = new ViewAssignmentPanel();
+//        viewReportPanel = new ViewReportPanel();
+//        viewProfilePanel = new ViewProfilePanel();
+  
+        switch(toPanel){
+            case "View Operator": {
+                currentPanel = "View Operator";
+                removeCustomPanel(context);
+                setLayouting(new ViewOperatorPanel());
+                context.validate();
+                context.repaint();
+            }break;
+            case "View Report": {
+                currentPanel = "View Report";
+                removeCustomPanel(context);
+                setLayouting(new ViewReportPanel());
+                context.validate();
+                context.repaint();
+            }break;
+            case "View Assignment": {
+                currentPanel = "View Assignment";
+                removeCustomPanel(context);
+                setLayouting(new ViewAssignmentPanel());
+                context.validate();
+                context.repaint();
+            }break;
+            case "View Profile": {
+                setLayouting(new ViewProfilePanel());
+                context.validate();
+                context.repaint();
+            }break;
+            case "View Data Master": {
+                setLayouting(new ViewDataMasterPanel());
+                context.validate();
+                context.repaint();
+            }break;
+            default:
+        }
+    }
+    
+//    private boolean isExist(String title){
+//        return java.util.Arrays.asList(this.getComponents()).contains(component);
+//    }
+    
+    private void removeCustomPanel(Container context) {
+        context.remove(mainPage);
+//        context.remove(viewOperatorPanel);
+//        context.remove(viewDataMasterPanel);
+//        context.remove(viewAssignmentPanel);
+//        context.remove(viewReportPanel);
+//        context.remove(viewProfilePanel);
+        Component[] componentList = context.getComponents();
+
+        //Loop through the components
+        for(Component c : componentList){
+
+            //Find the components you want to remove
+            if("View Operator".equals(this.currentPanel)){
+                if(c instanceof ViewOperatorPanel){
+//                    System.out.println(c);
+                    context.remove(c);
+                }
+            }else if("View Report".equals(this.currentPanel)){
+                if(c instanceof ViewReportPanel){
+//                    System.out.println(c);
+                    context.remove(c);
+                }
+            }else if("View Assignment".equals(this.currentPanel)){
+                if(c instanceof ViewAssignmentPanel){
+//                    System.out.println(c);
+                    context.remove(c);
+                }
+            }
+        }
+        context.validate();
+        context.repaint();
+    }
+    
+    private void setLayouting(JPanel panel) {
+
+        Container context = this.getContentPane();
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(context);
+        context.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(0, 145, Short.MAX_VALUE)
+                .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        
+//        context.setLayout(new BorderLayout());
+//        context.add(panel, BorderLayout.CENTER);
+
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -257,7 +376,7 @@ public class MainPage extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        SideBar = new javax.swing.JPanel();
+        sideBar = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         createReport = new javax.swing.JLabel();
         viewReport = new javax.swing.JLabel();
@@ -267,12 +386,12 @@ public class MainPage extends javax.swing.JFrame {
         viewProfile = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
-        MainPage = new javax.swing.JPanel();
+        mainPage = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        SideBar.setBackground(new java.awt.Color(102, 102, 102));
-        SideBar.setForeground(new java.awt.Color(102, 102, 102));
+        sideBar.setBackground(new java.awt.Color(102, 102, 102));
+        sideBar.setForeground(new java.awt.Color(102, 102, 102));
 
         jLabel2.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
@@ -306,13 +425,13 @@ public class MainPage extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("SIData");
 
-        javax.swing.GroupLayout SideBarLayout = new javax.swing.GroupLayout(SideBar);
-        SideBar.setLayout(SideBarLayout);
-        SideBarLayout.setHorizontalGroup(
-            SideBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(SideBarLayout.createSequentialGroup()
+        javax.swing.GroupLayout sideBarLayout = new javax.swing.GroupLayout(sideBar);
+        sideBar.setLayout(sideBarLayout);
+        sideBarLayout.setHorizontalGroup(
+            sideBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(sideBarLayout.createSequentialGroup()
                 .addGap(27, 27, 27)
-                .addGroup(SideBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(sideBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
                     .addComponent(jLabel1)
                     .addComponent(viewReport)
@@ -324,9 +443,9 @@ public class MainPage extends javax.swing.JFrame {
                 .addContainerGap(30, Short.MAX_VALUE))
             .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
         );
-        SideBarLayout.setVerticalGroup(
-            SideBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(SideBarLayout.createSequentialGroup()
+        sideBarLayout.setVerticalGroup(
+            sideBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(sideBarLayout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -348,16 +467,16 @@ public class MainPage extends javax.swing.JFrame {
                 .addContainerGap(187, Short.MAX_VALUE))
         );
 
-        MainPage.setBackground(new java.awt.Color(204, 204, 204));
+        mainPage.setBackground(new java.awt.Color(204, 204, 204));
 
-        javax.swing.GroupLayout MainPageLayout = new javax.swing.GroupLayout(MainPage);
-        MainPage.setLayout(MainPageLayout);
-        MainPageLayout.setHorizontalGroup(
-            MainPageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout mainPageLayout = new javax.swing.GroupLayout(mainPage);
+        mainPage.setLayout(mainPageLayout);
+        mainPageLayout.setHorizontalGroup(
+            mainPageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 836, Short.MAX_VALUE)
         );
-        MainPageLayout.setVerticalGroup(
-            MainPageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        mainPageLayout.setVerticalGroup(
+            mainPageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
@@ -366,14 +485,14 @@ public class MainPage extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(SideBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(sideBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(1, 1, 1)
-                .addComponent(MainPage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(mainPage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(SideBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(MainPage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(sideBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(mainPage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -411,20 +530,21 @@ public class MainPage extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
+      java.awt.EventQueue.invokeLater(new Runnable() {
+      
+      public void run() {
                 new MainPage().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel MainPage;
-    private javax.swing.JPanel SideBar;
     private javax.swing.JLabel createReport;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JPanel mainPage;
+    private javax.swing.JPanel sideBar;
     private javax.swing.JLabel viewAssignment;
     private javax.swing.JLabel viewData;
     private javax.swing.JLabel viewOperator;
