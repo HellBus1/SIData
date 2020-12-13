@@ -265,12 +265,6 @@ public class MainPage extends javax.swing.JFrame {
     
     private void removePanel(String toPanel) {
         Container context = this.getContentPane();
-        
-//        viewOperatorPanel = new ViewOperatorPanel();
-//        viewDataMasterPanel = new ViewDataMasterPanel();
-//        viewAssignmentPanel = new ViewAssignmentPanel();
-//        viewReportPanel = new ViewReportPanel();
-//        viewProfilePanel = new ViewProfilePanel();
   
         switch(toPanel){
             case "View Operator": {
@@ -295,11 +289,15 @@ public class MainPage extends javax.swing.JFrame {
                 context.repaint();
             }break;
             case "View Profile": {
+                currentPanel = "View Profile";
+                removeCustomPanel(context);
                 setLayouting(new ViewProfilePanel());
                 context.validate();
                 context.repaint();
             }break;
             case "View Data Master": {
+                currentPanel = "View Data Master";
+                removeCustomPanel(context);
                 setLayouting(new ViewDataMasterPanel());
                 context.validate();
                 context.repaint();
@@ -314,36 +312,75 @@ public class MainPage extends javax.swing.JFrame {
     
     private void removeCustomPanel(Container context) {
         context.remove(mainPage);
-//        context.remove(viewOperatorPanel);
-//        context.remove(viewDataMasterPanel);
-//        context.remove(viewAssignmentPanel);
-//        context.remove(viewReportPanel);
-//        context.remove(viewProfilePanel);
-        Component[] componentList = context.getComponents();
-
+        
         //Loop through the components
-        for(Component c : componentList){
+        
 
             //Find the components you want to remove
             if("View Operator".equals(this.currentPanel)){
-                if(c instanceof ViewOperatorPanel){
-//                    System.out.println(c);
-                    context.remove(c);
+                Component[] componentList = context.getComponents();
+                for(Component c : componentList){
+                    if((c instanceof ViewReportPanel) ||
+                            (c instanceof ViewProfilePanel) || 
+                            (c instanceof ViewDataMasterPanel) ||
+                            (c instanceof ViewAssignmentPanel)){
+                        context.remove(c);
+                        context.validate();
+                        context.repaint();
+                    }
                 }
             }else if("View Report".equals(this.currentPanel)){
-                if(c instanceof ViewReportPanel){
-//                    System.out.println(c);
-                    context.remove(c);
-                }
-            }else if("View Assignment".equals(this.currentPanel)){
-                if(c instanceof ViewAssignmentPanel){
-//                    System.out.println(c);
-                    context.remove(c);
+                Component[] componentList = context.getComponents();
+                for(Component c : componentList){
+                    if((c instanceof ViewOperatorPanel) ||
+                            (c instanceof ViewProfilePanel) || 
+                            (c instanceof ViewDataMasterPanel) ||
+                            (c instanceof ViewAssignmentPanel)){
+                        context.remove(c);
+                        context.validate();
+                        context.repaint();
+                    }
                 }
             }
-        }
-        context.validate();
-        context.repaint();
+            else if("View Assignment".equals(this.currentPanel)){
+                Component[] componentList = context.getComponents();
+                for(Component c : componentList){
+                    if((c instanceof ViewOperatorPanel) ||
+                            (c instanceof ViewProfilePanel) || 
+                            (c instanceof ViewDataMasterPanel) ||
+                            (c instanceof ViewReportPanel)){
+                        context.remove(c);
+                        context.validate();
+                        context.repaint();
+                    }
+                }
+            }            
+            else if("View Profile".equals(this.currentPanel)){
+                Component[] componentList = context.getComponents();
+                for(Component c : componentList){
+                    if((c instanceof ViewOperatorPanel) ||
+                            (c instanceof ViewAssignmentPanel) || 
+                            (c instanceof ViewDataMasterPanel) ||
+                            (c instanceof ViewReportPanel)){
+                        context.remove(c);
+                        context.validate();
+                        context.repaint();
+                    }
+                }
+            }
+            else if("View Data Master".equals(this.currentPanel)){
+                Component[] componentList = context.getComponents();
+                for(Component c : componentList){
+                    if((c instanceof ViewOperatorPanel) ||
+                            (c instanceof ViewAssignmentPanel) || 
+                            (c instanceof ViewProfilePanel) ||
+                            (c instanceof ViewReportPanel)){
+                        context.remove(c);
+                        context.validate();
+                        context.repaint();
+                    }
+                }
+            }
     }
     
     private void setLayouting(JPanel panel) {
@@ -361,9 +398,6 @@ public class MainPage extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-        
-//        context.setLayout(new BorderLayout());
-//        context.add(panel, BorderLayout.CENTER);
 
     }
 
