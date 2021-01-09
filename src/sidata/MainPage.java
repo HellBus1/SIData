@@ -494,11 +494,11 @@ public class MainPage extends javax.swing.JFrame {
                 .addComponent(viewOperator)
                 .addGap(18, 18, 18)
                 .addComponent(viewAssignment)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(viewData)
                 .addGap(18, 18, 18)
                 .addComponent(viewProfile)
-                .addContainerGap(187, Short.MAX_VALUE))
+                .addContainerGap(182, Short.MAX_VALUE))
         );
 
         mainPage.setBackground(new java.awt.Color(204, 204, 204));

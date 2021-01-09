@@ -10,112 +10,132 @@ package sidata.entity;
  * @author syubban
  */
 public class Operator {
-    private int operatorId;
-    private String operatorName;
-    private String operatorPosition;
-    private String operatorMobilenumber;
-    private String operatorEmail;
-    private String operatorInstitution;
+    private int id;
+    private String name;
+    private int position_id;
+    private String mobilenumber;
+    private String email;
+    private String institution;
+    private int status;
+    
+    public Operator(){
+        
+    }
     
     public Operator(
-        int operatorId,
-        String operatorName,
-        String operatorPosition,
-        String operatorMobilenumber,
-        String operatorEmail,
-        String operatorInstitution
+        int id,
+        String name,
+        int position_id,
+        String mobilenumber,
+        String email,
+        String institution,
+        int status
     ){
-        this.operatorId = operatorId;
-        this.operatorName = operatorName;
-        this.operatorPosition = operatorPosition;
-        this.operatorMobilenumber = operatorMobilenumber;
-        this.operatorEmail = operatorEmail;
-        this.operatorInstitution = operatorInstitution;
+        this.id = id;
+        this.name = name;
+        this.position_id = position_id;
+        this.mobilenumber = mobilenumber;
+        this.email = email;
+        this.institution  = institution;
+        this.status = status;
     }
 
     /**
-     * @return the operatorId
+     * @return the id
      */
-    public int getOperatorId() {
-        return operatorId;
+    public int getId() {
+        return id;
     }
 
     /**
-     * @param operatorId the operatorId to set
+     * @param id the id to set
      */
-    public void setOperatorId(int operatorId) {
-        this.operatorId = operatorId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     /**
-     * @return the operatorName
+     * @return the name
      */
-    public String getOperatorName() {
-        return operatorName;
+    public String getName() {
+        return name;
     }
 
     /**
-     * @param operatorName the operatorName to set
+     * @param name the name to set
      */
-    public void setOperatorName(String operatorName) {
-        this.operatorName = operatorName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     /**
-     * @return the operatorPosition
+     * @return the position_id
      */
-    public String getOperatorPosition() {
-        return operatorPosition;
+    public int getPosition_id() {
+        return position_id;
     }
 
     /**
-     * @param operatorPosition the operatorPosition to set
+     * @param position_id the position_id to set
      */
-    public void setOperatorPosition(String operatorPosition) {
-        this.operatorPosition = operatorPosition;
+    public void setPosition_id(int position_id) {
+        this.position_id = position_id;
     }
 
     /**
-     * @return the operatorMobilenumber
+     * @return the mobilenumber
      */
-    public String getOperatorMobilenumber() {
-        return operatorMobilenumber;
+    public String getMobilenumber() {
+        return mobilenumber;
     }
 
     /**
-     * @param operatorMobilenumber the operatorMobilenumber to set
+     * @param mobilenumber the mobilenumber to set
      */
-    public void setOperatorMobilenumber(String operatorMobilenumber) {
-        this.operatorMobilenumber = operatorMobilenumber;
+    public void setMobilenumber(String mobilenumber) {
+        this.mobilenumber = mobilenumber;
     }
 
     /**
-     * @return the operatorEmail
+     * @return the email
      */
-    public String getOperatorEmail() {
-        return operatorEmail;
+    public String getEmail() {
+        return email;
     }
 
     /**
-     * @param operatorEmail the operatorEmail to set
+     * @param email the email to set
      */
-    public void setOperatorEmail(String operatorEmail) {
-        this.operatorEmail = operatorEmail;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     /**
-     * @return the operatorInstitution
+     * @return the institution
      */
-    public String getOperatorInstitution() {
-        return operatorInstitution;
+    public String getInstitution() {
+        return institution;
     }
 
     /**
-     * @param operatorInstitution the operatorInstitution to set
+     * @param institution the institution to set
      */
-    public void setOperatorInstitution(String operatorInstitution) {
-        this.operatorInstitution = operatorInstitution;
+    public void setInstitution(String institution) {
+        this.institution = institution;
     }
-    
-    
+
+    /**
+     * @return the status
+     */
+    public int getStatus() {
+        return status;
+    }
+
+    /**
+     * @param status the status to set
+     */
+    public void setStatus(int status) {
+        this.status = status;
+    }
+          
 }

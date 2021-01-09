@@ -85,11 +85,11 @@
                   <Component id="viewOperator" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="viewAssignment" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="viewData" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="viewProfile" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="187" max="32767" attributes="0"/>
+                  <EmptySpace pref="182" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
