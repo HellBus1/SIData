@@ -32,17 +32,17 @@ public class ViewDetailOperator {
         List<Operator> operators = new ArrayList<>();
         
         try {
-            preparedStatement = dbhandler.getConnection().prepareStatement("select * from user where status != 0");
+            preparedStatement = dbhandler.getConnection().prepareStatement("select * from user where user_status != 0");
             resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
                 operators.add(new Operator(
-                    resultSet.getInt("id"),
-                    resultSet.getString("name"),
-                    resultSet.getInt("position_id"),
-                    resultSet.getString("mobilenumber"),
-                    resultSet.getString("email"),
-                    resultSet.getString("institution"),
-                    resultSet.getInt("status")
+                    resultSet.getInt("user_id"),
+                    resultSet.getString("user_name"),
+                    resultSet.getInt("user_position_id"),
+                    resultSet.getString("user_mobile_num"),
+                    resultSet.getString("user_email"),
+                    resultSet.getString("user_institution"),
+                    resultSet.getInt("user_status")
                 ));
             }
             resultSet.close();
@@ -68,7 +68,7 @@ public class ViewDetailOperator {
     public boolean addNewOperator(Operator operator) {
         boolean flag = false;
         try {
-            preparedStatement = dbhandler.getConnection().prepareStatement("insert into user (name, position_id, mobilenumber, email, institution, status)" +
+            preparedStatement = dbhandler.getConnection().prepareStatement("insert into user (user_name, user_position_id, user_mobile_num, user_email, user_institution, user_status)" +
                     " values (?, ?, ?, ?, ?, ?)");
             preparedStatement.setString(1, operator.getName());
             preparedStatement.setInt(2, operator.getPosition_id());
@@ -100,7 +100,7 @@ public class ViewDetailOperator {
     public boolean editOperator(Operator operator) {
         boolean flag = false;
         try {
-            preparedStatement = dbhandler.getConnection().prepareStatement("update user set name = ?, position_id = ?, mobilenumber = ?, email = ?, institution = ?, status = ? where id = ?");
+            preparedStatement = dbhandler.getConnection().prepareStatement("update user set user_name = ?, user_position_id = ?, user_mobile_num = ?, user_email = ?, user_institution = ?, user_status = ? where user_id = ?");
             preparedStatement.setString(1, operator.getName());
             preparedStatement.setInt(2, operator.getPosition_id());
             preparedStatement.setString(3, operator.getMobilenumber());
@@ -133,7 +133,7 @@ public class ViewDetailOperator {
     public boolean deactivateOperator(int id) {
         boolean flag = false;
         try {
-            preparedStatement = dbhandler.getConnection().prepareStatement("update user set status = 0 where id = ?");
+            preparedStatement = dbhandler.getConnection().prepareStatement("update user set user_status = 0 where user_id = ?");
             preparedStatement.setInt(1, id);
           
             preparedStatement.executeUpdate();

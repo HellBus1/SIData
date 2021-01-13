@@ -13,6 +13,8 @@ import java.awt.Label;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -22,6 +24,7 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -62,7 +65,6 @@ public class ViewOperatorPanel extends javax.swing.JPanel {
         topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
         
         addNewOperatorDialog = new JDialog(topFrame, "Add New Operator", true);
-        detailOperator = new JDialog(topFrame, "Detail Operator", true);
         
         viewDetailOperator = new ViewDetailOperator();
         operators.addAll(this.viewDetailOperator.getListOperator());
@@ -186,6 +188,7 @@ public class ViewOperatorPanel extends javax.swing.JPanel {
         
         mainPanel.add(lblInstitution);
         mainPanel.add(txtInstitution);
+        
 
         panel.add(mainPanel);
         panel.add(add);
@@ -219,9 +222,30 @@ public class ViewOperatorPanel extends javax.swing.JPanel {
         operator.setInstitution(institution);
         operator.setStatus(1);
         
-        if(this.viewDetailOperator.addNewOperator(operator)){
-            resetContent();
-            this.addNewOperatorDialog.setVisible(false);
+//        System.out.println("namae : " + name);
+        if(!name.equals("") && name != null) {
+            if(!position.equals("") && position != null){
+                if(!mobileNum.equals("") && mobileNum != null){
+                    if(!email.equals("") && email != null){
+                        if(!institution.equals("") && position != null){
+                            if(this.viewDetailOperator.addNewOperator(operator)){
+                                resetContent();
+                                this.addNewOperatorDialog.setVisible(false);
+                            }
+                        }else{
+                            JOptionPane.showMessageDialog(topFrame, "Institution cannot be empty"); 
+                        }
+                    }else{
+                        JOptionPane.showMessageDialog(topFrame, "Email cannot be empty"); 
+                    }
+                }else{
+                    JOptionPane.showMessageDialog(topFrame, "Mobile Number cannot be empty"); 
+                }
+            }else{
+                JOptionPane.showMessageDialog(topFrame, "Position cannot be empty"); 
+            }
+        }else{
+           JOptionPane.showMessageDialog(topFrame, "Name cannot be empty"); 
         }
     }
     
@@ -252,6 +276,25 @@ public class ViewOperatorPanel extends javax.swing.JPanel {
         jScrollPane1.setViewportView(jTable1);
     }
     
+    private void resetDetailJDialog() {        
+        Component[] componentList = this.getComponents();
+
+        //Loop through the components
+        for(Component c : componentList){
+
+            //Find the components you want to remove
+            if(c.getName() == null ? this.detailOperator.getName() == null : c.getName().equals(this.detailOperator.getName())){
+                
+                //Remove it
+                this.remove(c);
+            }
+        }
+
+        //IMPORTANT
+        this.revalidate();
+        this.repaint();
+    }
+    
     private void setTableListener() {
         jTable1.addMouseListener(new MouseAdapter() {
             @Override
@@ -280,6 +323,15 @@ public class ViewOperatorPanel extends javax.swing.JPanel {
     }
     
     private void addDetailModalComponent(Operator operator) {
+        detailOperator = new JDialog(topFrame, "Detail Operator", true);
+        detailOperator.setName("detail dialog");
+        this.detailOperator.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                resetDetailJDialog();
+            }
+        });
+                
         JPanel panel = new JPanel();
         System.out.println(operator.getName());
         
