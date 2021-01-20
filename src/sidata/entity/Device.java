@@ -12,7 +12,6 @@ package sidata.entity;
 public class Device {
     private int deviceId;
     private String deviceName;
-    private Operator user;
     private String description;
     
     
@@ -20,10 +19,9 @@ public class Device {
         
     }
     
-    public Device(int deviceId, String deviceName, Operator user, String description){
+    public Device(int deviceId, String deviceName, String description){
         this.deviceId = deviceId;
         this.deviceName = deviceName;
-        this.user = user;
         this.description = description;
     }
 
@@ -53,20 +51,6 @@ public class Device {
      */
     public void setDeviceName(String deviceName) {
         this.deviceName = deviceName;
-    }
-
-    /**
-     * @return the user
-     */
-    public Operator getUser() {
-        return user;
-    }
-
-    /**
-     * @param user the user to set
-     */
-    public void setUser(Operator user) {
-        this.user = user;
     }
 
     /**

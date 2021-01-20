@@ -13,7 +13,6 @@ public class QualityParameter {
     private int qpId;
     private Standard qpStandard;
     private Unit qpUnit;
-    private Assessment qpAssessment;
     private String qpParameter;
     private String qpAnalysisResult;
     private String qpTestingMethod;
@@ -24,12 +23,12 @@ public class QualityParameter {
         
     }
     
-    public QualityParameter(int qpId, Standard qpStandard, Unit qpUnit, Assessment qpAssessment, 
-            String qpParameter, String qpAnalysisResult, String qpTestingMethod, String qpNotes, String qpDescription) {
+    public QualityParameter(int qpId, Standard qpStandard, Unit qpUnit,
+            String qpParameter, String qpAnalysisResult, String qpTestingMethod, 
+            String qpNotes, String qpDescription) {
         this.qpId = qpId;
         this.qpStandard = qpStandard;
         this.qpUnit = qpUnit;
-        this.qpAssessment = qpAssessment;
         this.qpParameter = qpParameter;
         this.qpAnalysisResult = qpAnalysisResult;
         this.qpTestingMethod = qpTestingMethod;
@@ -77,20 +76,6 @@ public class QualityParameter {
      */
     public void setQpUnit(Unit qpUnit) {
         this.qpUnit = qpUnit;
-    }
-
-    /**
-     * @return the qpAssessment
-     */
-    public Assessment getQpAssessment() {
-        return qpAssessment;
-    }
-
-    /**
-     * @param qpAssessment the qpAssessment to set
-     */
-    public void setQpAssessment(Assessment qpAssessment) {
-        this.qpAssessment = qpAssessment;
     }
 
     /**

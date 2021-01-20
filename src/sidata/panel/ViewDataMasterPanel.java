@@ -166,7 +166,7 @@ public class ViewDataMasterPanel extends javax.swing.JPanel {
         jComboBox1 = new javax.swing.JComboBox<>();
         jPanel1 = new javax.swing.JPanel();
 
-        setBackground(new java.awt.Color(255, 255, 255));
+        setForeground(new java.awt.Color(240, 240, 240));
 
         dataMasterLabel.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         dataMasterLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -208,7 +208,7 @@ public class ViewDataMasterPanel extends javax.swing.JPanel {
                 .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(450, Short.MAX_VALUE))
+                .addContainerGap(423, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 

@@ -8,8 +8,23 @@ package sidata;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.event.*;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
+import sidata.controller.ItemCtl;
+import sidata.controller.ReportHandler;
+import sidata.entity.Assessment;
+import sidata.entity.Device;
+import sidata.entity.Operator;
+import sidata.entity.QualityParameter;
+import sidata.entity.SampleElement;
+import sidata.entity.SampleType;
+import sidata.form.AssessmentForm;
 import sidata.panel.ViewAssignmentPanel;
 import sidata.panel.ViewDataMasterPanel;
 import sidata.panel.ViewOperatorPanel;
@@ -21,13 +36,24 @@ import sidata.panel.ViewReportPanel;
  * @author syubban
  */
 public class MainPage extends javax.swing.JFrame {
-
-//    ViewOperatorPanel viewOperatorPanel;
-//    ViewDataMasterPanel viewDataMasterPanel;
-//    ViewAssignmentPanel viewAssignmentPanel;
-//    ViewReportPanel viewReportPanel;
-//    ViewProfilePanel viewProfilePanel;
+    
     private String currentPanel;
+    private JDialog addDialog;
+    private AssessmentForm assessmentForm;
+    private List<SampleType> sampleList;
+    private List<Device> testingDevice;
+    private List<Device> deviceList;
+    private List<SampleElement> simpleElementList;
+    private List<Operator> operatorList;
+    private List<QualityParameter> qp;
+    private ItemCtl itemCtl;
+    private ReportHandler reportHandler;
+    
+    List<String> typeList = new ArrayList<>();
+    List<String> testingDevices = new ArrayList<>();
+    List<String> devices = new ArrayList<>();
+    List<String> elements = new ArrayList<>();
+    List<String> operators = new ArrayList<>();
     
     /**
      * Creates new form MainPage
@@ -38,6 +64,36 @@ public class MainPage extends javax.swing.JFrame {
     }
     
     private void myCustomInitComponents(){
+        
+        sampleList = new ArrayList<>();
+        testingDevice = new ArrayList<>();
+        deviceList = new ArrayList<>();
+        simpleElementList = new ArrayList<>();
+        operatorList = new ArrayList<>();
+        qp = new ArrayList<>();
+        itemCtl = new ItemCtl();
+        reportHandler = new ReportHandler();
+        
+        sampleList.addAll(itemCtl.getListSampleType(""));
+        testingDevice.addAll(itemCtl.getListDevice(""));
+        deviceList.addAll(itemCtl.getListDevice(""));
+        simpleElementList.addAll(itemCtl.getListSampleElement(""));
+        operatorList.addAll(itemCtl.getListOperator(""));
+        qp.addAll(itemCtl.getListQualityParamter(""));
+        
+        for(SampleType type : sampleList){
+            typeList.add(type.getStId() + " " + type.getStName());
+        }
+        for(Device device : testingDevice){
+            testingDevices.add(device.getDeviceId() + " " + device.getDeviceName());
+            devices.add(device.getDeviceId() + " " + device.getDeviceName());
+        }
+        for(Operator operator : operatorList){
+            operators.add(operator.getId() + " " + operator.getName());
+        }
+        for(SampleElement element : simpleElementList){
+            elements.add(element.getSeId() + " " + element.getSeName());
+        }
         
         sideBar = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -51,7 +107,7 @@ public class MainPage extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JSeparator();
         mainPage = new javax.swing.JPanel();
         this.setResizable(false);
-        
+        addDialog = new JDialog(this, "Add New Report", true);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -77,7 +133,8 @@ public class MainPage extends javax.swing.JFrame {
             
             @Override
             public void mouseClicked(MouseEvent me){
-                System.out.println("clicked");
+                showForm();
+                addDialog.setVisible(true);
             }
         });
 
@@ -253,6 +310,27 @@ public class MainPage extends javax.swing.JFrame {
         );
 
         pack();
+    }
+    
+    private void showForm() {
+
+        assessmentForm = new AssessmentForm(typeList, testingDevices, devices, elements, operators, qp, (assm, ids) -> {
+            try {
+                this.addAssm(assm, ids);
+            } catch (ParseException ex) {
+                Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+//        JPanel jpanel = new JPanel();
+        JScrollPane js = new JScrollPane(assessmentForm, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        this.addDialog.setSize(600, 800);
+        this.addDialog.add(js);
+    }
+    
+    private void addAssm(Assessment assm, List<Integer> ids) throws ParseException {
+        if(this.reportHandler.addAssessment(assm, ids)){
+            this.addDialog.setVisible(false);
+        }
     }
     
     private void changeWhenEnter(JLabel label){
