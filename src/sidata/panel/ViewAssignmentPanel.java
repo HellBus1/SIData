@@ -5,6 +5,7 @@
  */
 package sidata.panel;
 
+import com.google.gson.Gson;
 import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.Label;
@@ -114,9 +115,10 @@ public class ViewAssignmentPanel extends javax.swing.JPanel {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     if (e.getClickCount() == 1) {
-                        resetContent("");
                         try {
-                            assignmentCtl.deleteAssignment(Integer.valueOf(idReport.getText()));
+                            if(assignmentCtl.deleteAssignment(Integer.valueOf(idReport.getText()))){
+                                resetContent();
+                            }
                         } catch (ParseException ex) {
                             Logger.getLogger(ViewAssignmentPanel.class.getName()).log(Level.SEVERE, null, ex);
                         }
@@ -263,14 +265,19 @@ public class ViewAssignmentPanel extends javax.swing.JPanel {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     if (e.getClickCount() == 1) {
-                        Assessment assessment = new Assessment();
-                        for(Assignment assign : assignmentList){
-                            if(assign.getAssignmentId() == getObjectId(comboBox.getSelectedItem().toString())){
-                                assessment = assign.getAssessment();
-                                break;
-                            }
+                        Assessment assessment = new Assessment();         
+                        assessment.setAssessmentId(getObjectId(comboBox.getSelectedItem().toString()));
+                        
+                        Assignment assignment = new Assignment(
+                            Integer.valueOf(txtId.getText()),
+                            assessment,
+                            txtName.getText()
+                        );
+                        try {
+                            editFunc(assignment);
+                        } catch (ParseException ex) {
+                            Logger.getLogger(ViewAssignmentPanel.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                        editFunc(assessment);
                     }
                 }
             }
@@ -281,15 +288,17 @@ public class ViewAssignmentPanel extends javax.swing.JPanel {
     }
     
     public void editFunc(Assignment assignment) throws ParseException {
+//        Gson gson = new Gson();
+//        System.out.println(gson.toJson(assignment));
         if(this.assignmentCtl.editAssignment(assignment)){
-            resetContent("");
+            resetContent();
             this.detailDialog.setVisible(false);
         }
     }
     
     public void addFunc(Assignment assignment) throws ParseException {
         if(this.assignmentCtl.addAssignment(assignment)){
-            resetContent("");
+            resetContent();
             this.addDialog.setVisible(false);
         }
     }
@@ -324,15 +333,20 @@ public class ViewAssignmentPanel extends javax.swing.JPanel {
                 public void mouseClicked(MouseEvent e) {
                     if (e.getClickCount() == 1) {
                        
-                       Assessment assessment = new Assessment();
-                       for(Assignment assign : assignmentList){
-                           if(assign.getAssignmentId() == getObjectId(comboBox.getSelectedItem().toString())){
-                               assessment = assign.getAssessment();
-                               break;
-                           }
-                       }
+                        Assessment assessment = new Assessment();         
+                        assessment.setAssessmentId(getObjectId(comboBox.getSelectedItem().toString()));
                         
-                       addFunc(assessment); 
+                        Assignment assignment = new Assignment(
+                            0,
+                            assessment,
+                            assignmentName.getText()
+                        );
+                        
+                        try { 
+                            addFunc(assignment);
+                        } catch (ParseException ex) {
+                            Logger.getLogger(ViewAssignmentPanel.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     }
                 }
             }
@@ -350,9 +364,12 @@ public class ViewAssignmentPanel extends javax.swing.JPanel {
         return Integer.valueOf(sb1.toString());
     }
     
-    private void resetContent(String params) {
+    public void resetContent() {
         assignmentList.clear();
         assignmentList.addAll(this.assignmentCtl.getListAssignment());
+        
+        Gson gson = new Gson();
+        System.out.println(gson.toJson(assignment));
         
         Component[] componentList = this.getComponents();
 

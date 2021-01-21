@@ -41,7 +41,7 @@ public class AssignmentCtl {
         List<Assignment> assignmentList = new ArrayList<>();
         
         try {
-            preparedStatement = dbhandler.getConnection().prepareStatement("select * from assignment inner join assessment on assessment.assessment_id = assignment.assignment_id");
+            preparedStatement = dbhandler.getConnection().prepareStatement("select * from assignment inner join assessment on assessment.assessment_id = assignment.assessment_id");
             resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
                 Operator user = new Operator();
@@ -157,7 +157,7 @@ public class AssignmentCtl {
         boolean flag = false;
         
         try {
-            preparedStatement = dbhandler.getConnection().prepareStatement("delete assignment where assignment_id = ?");
+            preparedStatement = dbhandler.getConnection().prepareStatement("delete from assignment where assignment_id = ?");
             preparedStatement.setInt(1, assignmentId);
           
             preparedStatement.executeUpdate();
