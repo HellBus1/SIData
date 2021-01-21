@@ -27,14 +27,14 @@ public class LoginPage extends javax.swing.JFrame {
     
     private void myCustomInitComponents(){
         txtEmail = new javax.swing.JTextField();
-        txtEmail.setText("johan@gmail.com");
+//        txtEmail.setText("johan@gmail.com");
         
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         
         txtPassword = new javax.swing.JTextField();
-        txtPassword.setText("123");
+//        txtPassword.setText("123");
         
         loginBtn = new javax.swing.JButton();
         topFrame = this;

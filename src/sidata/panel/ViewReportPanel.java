@@ -209,6 +209,9 @@ public class ViewReportPanel extends javax.swing.JPanel {
         
         assignments.addAll(this.handler.getListAssignment(Integer.valueOf(idReport.getText())));
         
+        System.out.println("Ukuran : " + String.valueOf(assignments.size()));
+        System.out.println("Id report : " + String.valueOf(Integer.valueOf(idReport.getText())));
+        
         JTable assignmentTable = new JTable();
         assignmentTable.setModel(new FinalItemTableModel(assignments, columnNames));
         JScrollPane jScroll = new JScrollPane();
@@ -252,9 +255,9 @@ public class ViewReportPanel extends javax.swing.JPanel {
     
     private void showForm() {
         System.out.println(operators.size());
-        assessmentForm = new AssessmentForm(typeList, testingDevices, devices, elements, operators, qp, (assm, ids) -> {
+        assessmentForm = new AssessmentForm(typeList, testingDevices, devices, elements, operators, qp, (assm, ids, idAssign) -> {
             try {
-                this.updateReport(assm, ids);
+                this.updateReport(assm, ids, idAssign);
             } catch (ParseException ex) {
                 Logger.getLogger(ViewReportPanel.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -266,8 +269,8 @@ public class ViewReportPanel extends javax.swing.JPanel {
         this.addDialog.setVisible(true);
     }
     
-    private void updateReport(Assessment params, List<Integer> qualityParamIndex) throws ParseException { 
-        if(this.handler.updateAssessment(params, qualityParamIndex)){
+    private void updateReport(Assessment params, List<Integer> qualityParamIndex, int idAssign) throws ParseException { 
+        if(this.handler.updateAssessment(params, qualityParamIndex, idAssign)){
             jTable1 = new javax.swing.JTable();
             jTable1.setModel(new FinalItemTableModel(assessmentList, columnName));
             setTableListener();

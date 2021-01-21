@@ -11,16 +11,16 @@ package sidata.entity;
  */
 public class Assignment {
     private int assignmentId;
-    private Assessment assessment;
+    private Operator operator;
     private String assignmentName;
     
     public Assignment() {
         
     }
     
-    public Assignment(int assignmentId, Assessment assessment, String assignmentName) {
+    public Assignment(int assignmentId, Operator operator, String assignmentName) {
         this.assignmentId = assignmentId;
-        this.assessment = assessment;
+        this.operator = operator;
         this.assignmentName = assignmentName;
     }
 
@@ -41,15 +41,15 @@ public class Assignment {
     /**
      * @return the assessment
      */
-    public Assessment getAssessment() {
-        return assessment;
+    public Operator getOperator() {
+        return operator;
     }
 
     /**
      * @param assessment the assessment to set
      */
-    public void setAssessment(Assessment assessment) {
-        this.assessment = assessment;
+    public void setOperator(Operator operator) {
+        this.operator = operator;
     }
 
     /**

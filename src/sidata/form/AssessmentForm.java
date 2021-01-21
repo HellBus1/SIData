@@ -17,6 +17,7 @@ import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import sidata.abstraction.FinalItemTableModel;
+import sidata.controller.ReportHandler;
 import sidata.entity.Assessment;
 import sidata.entity.Device;
 import sidata.entity.Operator;
@@ -44,6 +45,7 @@ public class AssessmentForm extends javax.swing.JPanel {
     private AddAssessment assmFunc;
     boolean isEdit;
     private Report report;
+    private ReportHandler handler = new ReportHandler();
             
      /**
      * Creates new form AssessmentForm
@@ -106,6 +108,7 @@ public class AssessmentForm extends javax.swing.JPanel {
         jLabel10 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         id = new JLabel();
+        idAssignment = new javax.swing.JLabel();
         
         txtCode = new javax.swing.JTextField();
         txtCode.setText("910213");
@@ -201,7 +204,7 @@ public class AssessmentForm extends javax.swing.JPanel {
                             txtRegis.getText(),
                             txtCode.getText()
                         );
-                        assmFunc.execute(assessment, listId);
+                        assmFunc.execute(assessment, listId, Integer.valueOf(idAssignment.getText()));
                     }
                 }
             }
@@ -210,6 +213,12 @@ public class AssessmentForm extends javax.swing.JPanel {
         jLabel10.setText("Quality Parameter");
 
         jLabel14.setText("Associated Quality Parameter");
+        
+        if(handler.hasReport() != 0){
+            idAssignment.setText(String.valueOf(handler.hasReport()));
+        }else{
+            idAssignment.setText("Assignment ID");
+        }
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -254,13 +263,16 @@ public class AssessmentForm extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel13)
-                            .addComponent(addQualityParams)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel10)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(id))
                             .addComponent(jLabel14))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(addQualityParams)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(idAssignment)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -323,7 +335,9 @@ public class AssessmentForm extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(addQualityParams)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(addQualityParams)
+                    .addComponent(idAssignment))
                 .addGap(36, 36, 36)
                 .addComponent(addAssessment, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -397,7 +411,7 @@ public class AssessmentForm extends javax.swing.JPanel {
     }
     
     public interface AddAssessment {
-        public void execute(Assessment assm, List<Integer> ids);
+        public void execute(Assessment assm, List<Integer> ids, int idReport);
     }
     
     private void myCustomEditInitComponent() {
@@ -425,6 +439,7 @@ public class AssessmentForm extends javax.swing.JPanel {
         jLabel10 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         id = new JLabel();
+        idAssignment = new javax.swing.JLabel();
         
         txtCode = new javax.swing.JTextField();
         txtCode.setText(this.report.getAssessment().getAssmCode());
@@ -524,7 +539,7 @@ public class AssessmentForm extends javax.swing.JPanel {
                             txtRegis.getText(),
                             txtCode.getText()
                         );
-                        assmFunc.execute(assessment, listId);
+                        assmFunc.execute(assessment, listId, Integer.valueOf(idAssignment.getText()));
                     }
                 }
             }
@@ -533,6 +548,12 @@ public class AssessmentForm extends javax.swing.JPanel {
         jLabel10.setText("Quality Parameter");
 
         jLabel14.setText("Associated Quality Parameter");
+        
+        if(handler.hasReport() != 0){
+            idAssignment.setText(String.valueOf(handler.hasReport()));
+        }else{
+            idAssignment.setText("Assignment ID");
+        }
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -577,13 +598,16 @@ public class AssessmentForm extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel13)
-                            .addComponent(addQualityParams)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel10)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(id))
                             .addComponent(jLabel14))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(addQualityParams)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(idAssignment)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -646,7 +670,9 @@ public class AssessmentForm extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(addQualityParams)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(addQualityParams)
+                    .addComponent(idAssignment))
                 .addGap(36, 36, 36)
                 .addComponent(addAssessment, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -697,6 +723,7 @@ public class AssessmentForm extends javax.swing.JPanel {
         id = new javax.swing.JLabel();
         txtDate = new javax.swing.JFormattedTextField();
         txtTestingDate = new javax.swing.JFormattedTextField();
+        idAssignment = new javax.swing.JLabel();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -789,6 +816,8 @@ public class AssessmentForm extends javax.swing.JPanel {
         id.setForeground(new java.awt.Color(255, 255, 255));
         id.setText("jLabel15");
 
+        idAssignment.setText("Assignment ID");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -832,13 +861,16 @@ public class AssessmentForm extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel13)
-                            .addComponent(addQualityParams)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel10)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(id))
                             .addComponent(jLabel14))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(addQualityParams)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(idAssignment)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -901,7 +933,9 @@ public class AssessmentForm extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(addQualityParams)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(addQualityParams)
+                    .addComponent(idAssignment))
                 .addGap(36, 36, 36)
                 .addComponent(addAssessment, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -922,6 +956,7 @@ public class AssessmentForm extends javax.swing.JPanel {
     private javax.swing.JComboBox<String> comboSample;
     private javax.swing.JComboBox<String> comboSampleType;
     private javax.swing.JLabel id;
+    private javax.swing.JLabel idAssignment;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;

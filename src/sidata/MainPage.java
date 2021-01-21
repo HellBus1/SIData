@@ -101,16 +101,29 @@ public class MainPage extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         createReport = new javax.swing.JLabel();
         viewReport = new javax.swing.JLabel();
-        if(UserStatic.getUserPositionId() == 3){
-            viewReport.setVisible(false);
-            createReport.setVisible(false);
-        }
+
         viewOperator = new javax.swing.JLabel();
         viewAssignment = new javax.swing.JLabel();
         viewData = new javax.swing.JLabel();
-        if(UserStatic.getUserPositionId() != 3){
+
+        if(UserStatic.getUserPositionId() == 2){
             viewData.setVisible(false);
+            createReport.setVisible(false);
         }
+        
+        if(UserStatic.getUserPositionId() == 1){
+            viewData.setVisible(false);
+            viewOperator.setVisible(false);
+        }
+        
+        if(UserStatic.getUserPositionId() == 3){
+            viewReport.setVisible(false);
+            createReport.setVisible(false);
+            viewAssignment.setVisible(false);
+            viewAssignment.setVisible(false);
+            viewOperator.setVisible(false);
+        }
+
         viewProfile = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
@@ -142,6 +155,9 @@ public class MainPage extends javax.swing.JFrame {
             
             @Override
             public void mouseClicked(MouseEvent me){
+//                if(){
+//                    
+//                }
                 showForm();
                 addDialog.setVisible(true);
             }
@@ -323,9 +339,9 @@ public class MainPage extends javax.swing.JFrame {
     
     private void showForm() {
 
-        assessmentForm = new AssessmentForm(typeList, testingDevices, devices, elements, operators, qp, (assm, ids) -> {
+        assessmentForm = new AssessmentForm(typeList, testingDevices, devices, elements, operators, qp, (assm, ids, assignmentId) -> {
             try {
-                this.addAssm(assm, ids);
+                this.addAssm(assm, ids, assignmentId);
             } catch (ParseException ex) {
                 Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -336,8 +352,8 @@ public class MainPage extends javax.swing.JFrame {
         this.addDialog.add(js);
     }
     
-    private void addAssm(Assessment assm, List<Integer> ids) throws ParseException {
-        if(this.reportHandler.addAssessment(assm, ids)){
+    private void addAssm(Assessment assm, List<Integer> ids, int idAssignment) throws ParseException {
+        if(this.reportHandler.addAssessment(assm, ids, idAssignment)){
             this.addDialog.setVisible(false);
         }
     }

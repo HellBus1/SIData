@@ -41,35 +41,25 @@ public class AssignmentCtl {
         List<Assignment> assignmentList = new ArrayList<>();
         
         try {
-            preparedStatement = dbhandler.getConnection().prepareStatement("select * from assignment inner join assessment on assessment.assessment_id = assignment.assessment_id");
+            preparedStatement = dbhandler.getConnection().prepareStatement("select * from assignment inner join user on user.user_id = assignment.assignment_user_id where user.user_position_id = 1");
             resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
                 Operator user = new Operator();
-                user.setId(resultSet.getInt("assm_user_id"));
-                
-                Device device = new Device();
-                device.setDeviceId(resultSet.getInt("assm_device_id"));
-                
-                Standard standard = new Standard();
-                standard.setStandardId(resultSet.getInt("assm_st_id"));
-                
-                SampleElement element = new SampleElement();
-                element.setSeId(resultSet.getInt("assm_se_id"));
-                
-                Assessment assessment = new Assessment(
-                    resultSet.getInt("assessment_id"),
-                    user,
-                    device,
-                    standard,
-                    element,
-                    resultSet.getTimestamp("assm_test_date").toString(),
-                    resultSet.getString("assm_name"),
-                    resultSet.getString("assm_code")
+
+                Operator operator = new Operator(
+                    resultSet.getInt("user_id"),
+                    resultSet.getString("user_name"),
+                    resultSet.getInt("user_position_id"),
+                    resultSet.getString("user_mobile_num"),
+                    resultSet.getString("user_email"),
+                    resultSet.getString("user_institution"),
+                    resultSet.getInt("user_status"),
+                    resultSet.getString("regis_number")
                 );
                 
                 assignmentList.add(new Assignment(
                     resultSet.getInt("assignment_id"),
-                    assessment,
+                    operator,
                     resultSet.getString("assignment_name")  
                 ));
             }
@@ -100,9 +90,9 @@ public class AssignmentCtl {
         boolean flag = false;
         
         try {
-            preparedStatement = dbhandler.getConnection().prepareStatement("insert into assignment (assessment_id, assignment_name)" +
+            preparedStatement = dbhandler.getConnection().prepareStatement("insert into assignment (assignment_user_id, assignment_name)" +
                     " values (?, ?)");
-            preparedStatement.setInt(1, assignment.getAssessment().getAssessmentId());
+            preparedStatement.setInt(1, assignment.getOperator().getId());
             preparedStatement.setString(2, assignment.getAssignmentName());
           
             preparedStatement.executeUpdate();
@@ -129,9 +119,10 @@ public class AssignmentCtl {
         boolean flag = false;
         
         try {
-            preparedStatement = dbhandler.getConnection().prepareStatement("update assignment set assessment_id = ?, assignment_name = ?");
-            preparedStatement.setInt(1, assignment.getAssessment().getAssessmentId());
+            preparedStatement = dbhandler.getConnection().prepareStatement("update assignment set assignment_user_id = ?, assignment_name = ? where assignment_id = ?");
+            preparedStatement.setInt(1, assignment.getOperator().getId());
             preparedStatement.setString(2, assignment.getAssignmentName());
+            preparedStatement.setInt(3, assignment.getAssignmentId());
           
             preparedStatement.executeUpdate();
             flag = true;
@@ -180,34 +171,22 @@ public class AssignmentCtl {
         return flag;
     }
     
-    public List<Assessment> getListAssessment() {
-        List<Assessment> assessmentList = new ArrayList<>();
+    public List<Operator> getListOperator() {
+        List<Operator> operatorList = new ArrayList<>();
         
         try {
-            preparedStatement = dbhandler.getConnection().prepareStatement("select * from assessment");
+            preparedStatement = dbhandler.getConnection().prepareStatement("select * from user where user_position_id = 1");
             resultSet = preparedStatement.executeQuery();
-            while(resultSet.next()){                      
-                Operator user = new Operator();
-                user.setId(resultSet.getInt("assm_user_id"));
-                
-                Device device = new Device();
-                device.setDeviceId(resultSet.getInt("assm_device_id"));
-                
-                Standard standard = new Standard();
-                standard.setStandardId(resultSet.getInt("assm_st_id"));
-                
-                SampleElement element = new SampleElement();
-                element.setSeId(resultSet.getInt("assm_se_id"));
-                
-                assessmentList.add(new Assessment(
-                    resultSet.getInt("assessment_id"),
-                    user,
-                    device,
-                    standard,
-                    element,
-                    resultSet.getTimestamp("assm_test_date").toString(),
-                    resultSet.getString("assm_name"),
-                    resultSet.getString("assm_code")
+            while(resultSet.next()){                                      
+                operatorList.add(new Operator(
+                    resultSet.getInt("user_id"),
+                    resultSet.getString("user_name"),
+                    resultSet.getInt("user_position_id"),
+                    resultSet.getString("user_mobile_num"),
+                    resultSet.getString("user_email"),
+                    resultSet.getString("user_institution"),
+                    resultSet.getInt("user_status"),
+                    resultSet.getString("regis_number")
                 ));
             }
             
@@ -230,7 +209,7 @@ public class AssignmentCtl {
            
         }
         
-        return assessmentList;
+        return operatorList;
     }
     
 }

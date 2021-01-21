@@ -34,6 +34,7 @@ import sidata.controller.AssignmentCtl;
 import sidata.database.UserStatic;
 import sidata.entity.Assessment;
 import sidata.entity.Assignment;
+import sidata.entity.Operator;
 import sidata.entity.Unit;
 
 /**
@@ -42,12 +43,12 @@ import sidata.entity.Unit;
  */
 public class ViewAssignmentPanel extends javax.swing.JPanel {
     private List<Assignment> assignmentList;
-    private List<Assessment> assessmentList;
+    private List<Operator> operatorList;
     private List<String> dropListValue;
     private AssignmentCtl assignmentCtl;
-    private Assessment assessment;
+    private Operator operator;
     private Assignment assignment;
-    private String [] columnName = { "Assignment ID", "Assessment ID", "Assignment Name" };
+    private String [] columnName = { "Assignment ID", "User ID", "Assignment Name" };
     private JDialog addDialog, detailDialog;
     JFrame topFrame;
     
@@ -72,12 +73,12 @@ public class ViewAssignmentPanel extends javax.swing.JPanel {
         assignmentList = new ArrayList<>();
         assignmentList.addAll(this.assignmentCtl.getListAssignment());
         
-        assessmentList = new ArrayList<>();
-        assessmentList.addAll(this.assignmentCtl.getListAssessment());
+        operatorList = new ArrayList<>();
+        operatorList.addAll(this.assignmentCtl.getListOperator());
         
         dropListValue = new ArrayList<>();
-        for(Assessment assessment : assessmentList){
-            dropListValue.add(assessment.getAssessmentId() + " " + assessment.getAssmName());
+        for(Operator operator : operatorList){
+            dropListValue.add(operator.getId()+ " " + operator.getName());
         }
         
         topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
@@ -185,7 +186,7 @@ public class ViewAssignmentPanel extends javax.swing.JPanel {
                         if(assign.getAssignmentId() == Integer.valueOf(jTable.getValueAt(row, 0).toString())){
                             assignment = new Assignment();
                             assignment.setAssignmentId(assign.getAssignmentId());
-                            assignment.setAssessment(assign.getAssessment());
+                            assignment.setOperator(assign.getOperator());
                             assignment.setAssignmentName(assign.getAssignmentName());
                             break;
                         }
@@ -237,7 +238,7 @@ public class ViewAssignmentPanel extends javax.swing.JPanel {
         Label assignmentId, assessmentId, assignmentName;
         JTextField txtId, txtName;
         JComboBox comboBox = new JComboBox(this.dropListValue.toArray());
-        comboBox.getModel().setSelectedItem(unit.getAssessment().getAssessmentId() + " " + unit.getAssessment().getAssmName());
+        comboBox.getModel().setSelectedItem(unit.getOperator().getId()+ " " + unit.getOperator().getName());
 
         JPanel mainPanel = new JPanel(new GridLayout(0, 2));
         
@@ -273,12 +274,12 @@ public class ViewAssignmentPanel extends javax.swing.JPanel {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     if (e.getClickCount() == 1) {
-                        Assessment assessment = new Assessment();         
-                        assessment.setAssessmentId(getObjectId(comboBox.getSelectedItem().toString()));
+                        Operator operator = new Operator();         
+                        operator.setId(getObjectId(comboBox.getSelectedItem().toString()));
                         
                         Assignment assignment = new Assignment(
                             Integer.valueOf(txtId.getText()),
-                            assessment,
+                            operator,
                             txtName.getText()
                         );
                         try {
@@ -341,12 +342,12 @@ public class ViewAssignmentPanel extends javax.swing.JPanel {
                 public void mouseClicked(MouseEvent e) {
                     if (e.getClickCount() == 1) {
                        
-                        Assessment assessment = new Assessment();         
-                        assessment.setAssessmentId(getObjectId(comboBox.getSelectedItem().toString()));
+                        Operator operator = new Operator();         
+                        operator.setId(getObjectId(comboBox.getSelectedItem().toString()));
                         
                         Assignment assignment = new Assignment(
                             0,
-                            assessment,
+                            operator,
                             assignmentName.getText()
                         );
                         

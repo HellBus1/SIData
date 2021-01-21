@@ -144,7 +144,7 @@ public class FinalItemTableModel <T> extends AbstractTableModel {
                 case 0: 
                     return object.getAssignmentId();
                 case 1:
-                    return object.getAssessment().getAssessmentId();
+                    return object.getOperator().getId();
                 case 2:
                     return object.getAssignmentName();
             }

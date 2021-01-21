@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import sidata.database.DBHandler;
+import sidata.database.UserStatic;
 import sidata.entity.Assessment;
 import sidata.entity.Assignment;
 import sidata.entity.Device;
@@ -45,7 +46,7 @@ public class ReportHandler {
     }
     
     // Assessment
-    public boolean addAssessment (Assessment units, List<Integer> id) throws ParseException {
+    public boolean addAssessment (Assessment units, List<Integer> id, int assignmentId) throws ParseException {
         boolean flag = false;
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
         Date parsedDate = (Date) dateFormat.parse(units.getTestDate());
@@ -53,8 +54,8 @@ public class ReportHandler {
         
         try {
             preparedStatement = dbhandler.getConnection().prepareStatement(
-            "insert into assessment (assm_user_id, assm_device_id, assm_st_id, assm_se_id, assm_test_date, assm_name, assm_code) "
-                    + "values (?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+            "insert into assessment (assm_user_id, assm_device_id, assm_st_id, assm_se_id, assm_test_date, assm_name, assm_code, assm_assignment_id) "
+                    + "values (?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
             String[] splittedUnit = units.getUser().getName().split(" ");
             String[] splittedDevice = units.getDevice().getDeviceName().split(" ");
             String[] splittedStandard = units.getStandard().getStandardName().split(" ");
@@ -77,6 +78,7 @@ public class ReportHandler {
             preparedStatement.setTimestamp(5, timestamp);
             preparedStatement.setString(6, units.getAssmName());
             preparedStatement.setString(7, units.getAssmCode());
+            preparedStatement.setInt(8, assignmentId);
             
             if(preparedStatement.executeUpdate() > 0){
                 try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
@@ -113,7 +115,8 @@ public class ReportHandler {
         return flag;
     }  
     
-    public boolean updateAssessment (Assessment units, List<Integer> id) throws ParseException {
+    public boolean updateAssessment (Assessment units, List<Integer> id, int idAssign) throws ParseException {
+        System.out.println("Assignment ID : " + idAssign);
         boolean flag = false;
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
         Date parsedDate = (Date) dateFormat.parse(units.getTestDate());
@@ -121,7 +124,7 @@ public class ReportHandler {
         
         try {
             preparedStatement = dbhandler.getConnection().prepareStatement(
-            "update assessment set assm_user_id = ?, assm_device_id = ?, assm_st_id = ?, assm_se_id = ?, assm_test_date = ?, assm_name = ?, assm_code = ? "
+            "update assessment set assm_user_id = ?, assm_device_id = ?, assm_st_id = ?, assm_se_id = ?, assm_test_date = ?, assm_name = ?, assm_code = ?"
                     + "where assessment_id = ?", Statement.RETURN_GENERATED_KEYS);
             String[] splittedUnit = units.getUser().getName().split(" ");
             String[] splittedDevice = units.getDevice().getDeviceName().split(" ");
@@ -151,7 +154,7 @@ public class ReportHandler {
                 try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
                     int ids = (generatedKeys.next()) ? (generatedKeys.getInt(1)) : -1;
                     if(ids == -1){
-//                        flag = false;
+                        flag = false;
                         System.out.println("terjadi kesalahan");
                     }else {
                         System.out.println("ids " + ids);
@@ -385,36 +388,23 @@ public class ReportHandler {
         List<Assignment> assignmentList = new ArrayList<>();
         
         try {
-            preparedStatement = dbhandler.getConnection().prepareStatement("select * from assignment inner join assessment on assessment.assessment_id = assignment.assignment_id where assessment.assessment_id = ?");
+            preparedStatement = dbhandler.getConnection().prepareStatement("select * from assignment inner join user on user.user_id = assignment.assignment_user_id where assignment.assignment_id = ?");
             preparedStatement.setInt(1, assessmentIndex);
             resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
-                Operator user = new Operator();
-                user.setId(resultSet.getInt("assm_user_id"));
-                
-                Device device = new Device();
-                device.setDeviceId(resultSet.getInt("assm_device_id"));
-                
-                Standard standard = new Standard();
-                standard.setStandardId(resultSet.getInt("assm_st_id"));
-                
-                SampleElement element = new SampleElement();
-                element.setSeId(resultSet.getInt("assm_se_id"));
-                
-                Assessment assessment = new Assessment(
-                    resultSet.getInt("assessment_id"),
-                    user,
-                    device,
-                    standard,
-                    element,
-                    resultSet.getTimestamp("assm_test_date").toString(),
-                    resultSet.getString("assm_name"),
-                    resultSet.getString("assm_code")
-                );
                 
                 assignmentList.add(new Assignment(
                     resultSet.getInt("assignment_id"),
-                    assessment,
+                    new Operator(
+                        resultSet.getInt("user_id"),
+                        resultSet.getString("user_name"),
+                        resultSet.getInt("user_position_id"),
+                        resultSet.getString("user_mobile_num"),
+                        resultSet.getString("user_email"),
+                        resultSet.getString("user_institution"),
+                        resultSet.getInt("user_status"),
+                        resultSet.getString("regis_number")
+                    ),
                     resultSet.getString("assignment_name")  
                 ));
             }
@@ -439,5 +429,37 @@ public class ReportHandler {
         }
         
         return assignmentList;
+    }
+    
+    public int hasReport(){
+        int flag = 0;
+        
+        try {
+            preparedStatement = dbhandler.getConnection().prepareStatement("select * from assignment where assignment_user_id = ?");
+            preparedStatement.setInt(1, UserStatic.getUserId());
+            resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                flag = resultSet.getInt("assignment_id");
+            }else{
+                flag = 0;
+            }
+            resultSet.close();
+        }catch(SQLException se){
+            //Handle errors for JDBC
+            System.out.println("Insert Operator JDBC Error" + se);
+        }catch(Exception e){
+            System.out.println("INsert Operator Error" + e);
+        }finally {
+            try {
+                if(preparedStatement != null){
+                    preparedStatement.close();
+                }
+            } catch(SQLException se) {
+                se.printStackTrace();
+            }
+           
+        }
+        
+        return flag;
     }
 }
