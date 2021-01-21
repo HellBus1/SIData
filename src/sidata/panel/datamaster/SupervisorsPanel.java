@@ -42,7 +42,7 @@ public class SupervisorsPanel extends javax.swing.JPanel {
     JFrame topFrame;
     private Label lblName, lblPosition, lblMobile, lblEmail, lblInstitution, lblDescription;
     private JTextField txtName, txtDescription, txtMobile, txtEmail, txtInstitution;
-    private String [] columnName = {"Supervisor ID", "Supervisor Name", "Supervisor Mobile", "Supervisor Email", "Supervisor Institution"};
+    private String [] columnName = {"Supervisor ID", "Supervisor Name", "Supervisor Mobile", "Supervisor Email", "Supervisor Institution", "Supervisor Registration Number"};
     private String [] deviceColumn = {"Device ID", "Device Name", "Device Description" };
     
     private JComboBox dropPosition;
@@ -298,7 +298,8 @@ public class SupervisorsPanel extends javax.swing.JPanel {
                                 jTable.getValueAt(row, 2).toString(),
                                 jTable.getValueAt(row, 3).toString(),
                                 jTable.getValueAt(row, 4).toString(),
-                                1
+                                1,
+                                jTable.getValueAt(row, 5).toString()
                             ));
                             
                             id.setText(String.valueOf(Integer.valueOf(jTable.getValueAt(row, 0).toString())));
@@ -507,7 +508,8 @@ public class SupervisorsPanel extends javax.swing.JPanel {
                             txtMobile.getText(),
                             txtEmail.getText(),
                             txtInstitution.getText(),
-                            operator.getStatus()
+                            operator.getStatus(),
+                            operator.getRegisnNumber()
                        )); 
                     }
                 }

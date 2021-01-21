@@ -22,6 +22,7 @@ import sidata.entity.Assessment;
 import sidata.entity.Device;
 import sidata.entity.Operator;
 import sidata.entity.QualityParameter;
+import sidata.entity.Report;
 import sidata.entity.SampleElement;
 import sidata.entity.SampleType;
 import sidata.form.AssessmentForm;
@@ -320,7 +321,7 @@ public class MainPage extends javax.swing.JFrame {
             } catch (ParseException ex) {
                 Logger.getLogger(MainPage.class.getName()).log(Level.SEVERE, null, ex);
             }
-        });
+        }, false, new Report());
 //        JPanel jpanel = new JPanel();
         JScrollPane js = new JScrollPane(assessmentForm, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         this.addDialog.setSize(600, 800);

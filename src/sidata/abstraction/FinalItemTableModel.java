@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
 import sidata.entity.Assessment;
+import sidata.entity.Assignment;
 import sidata.entity.Device;
 import sidata.entity.Operator;
 import sidata.entity.QualityParameter;
@@ -136,6 +137,16 @@ public class FinalItemTableModel <T> extends AbstractTableModel {
                     return object.getAssmName();
                 case 7:
                     return object.getAssmCode();
+            }
+        }else if(li.get(rowIndex) instanceof Assignment) {
+            Assignment object = (Assignment) li.get(rowIndex);
+            switch (columnIndex) {
+                case 0: 
+                    return object.getAssignmentId();
+                case 1:
+                    return object.getAssessment().getAssessmentId();
+                case 2:
+                    return object.getAssignmentName();
             }
         }else {
             QualityParameter object = (QualityParameter) li.get(rowIndex);

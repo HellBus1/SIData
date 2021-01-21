@@ -17,6 +17,7 @@ public class Operator {
     private String email;
     private String institution;
     private int status;
+    private String regisNumber;
     
     public Operator(){
         
@@ -29,7 +30,8 @@ public class Operator {
         String mobilenumber,
         String email,
         String institution,
-        int status
+        int status,
+        String regisNumber
     ){
         this.id = id;
         this.name = name;
@@ -38,6 +40,7 @@ public class Operator {
         this.email = email;
         this.institution  = institution;
         this.status = status;
+        this.regisNumber = regisNumber;
     }
 
     /**
@@ -136,6 +139,14 @@ public class Operator {
      */
     public void setStatus(int status) {
         this.status = status;
+    }
+    
+    public void setRegisNumber(String regisNumber) {
+        this.regisNumber = regisNumber;
+    }
+    
+    public String getRegisnNumber() {
+        return this.regisNumber;
     }
           
 }

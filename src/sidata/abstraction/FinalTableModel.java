@@ -17,7 +17,7 @@ import sidata.entity.Operator;
 public class FinalTableModel extends AbstractTableModel {
 
     private List<Operator> li = new ArrayList();
-    private String[] columnNames = {"ID", "Name", "Position", "Mobile Number", "Email", "Institution", "Status"};
+    private String[] columnNames = {"ID", "Name", "Position", "Mobile Number", "Email", "Institution", "Status", "Registration Number"};
 
     public FinalTableModel(List<Operator> list){
          this.li = list;
@@ -55,7 +55,9 @@ public class FinalTableModel extends AbstractTableModel {
             case 5:
                 return si.getInstitution();
             case 6:
-                return si.getStatus(); 
+                return si.getStatus();
+            case 7:
+                return si.getRegisnNumber();
            }
            return null;
    }
@@ -63,21 +65,24 @@ public class FinalTableModel extends AbstractTableModel {
    @Override
    public Class<?> getColumnClass(int columnIndex){
           switch (columnIndex){
-             case 0:
-               return Integer.class;
-             case 1:
-               return String.class;
-             case 2:
-               return Integer.class;
-             case 3:
-               return String.class;
-             case 4:
-               return String.class;
-             case 5:
-               return String.class;
-             case 6:
-               return Integer.class;
-             }
-             return null;
+                case 0:
+                  return Integer.class;
+                case 1:
+                  return String.class;
+                case 2:
+                  return Integer.class;
+                case 3:
+                  return String.class;
+                case 4:
+                  return String.class;
+                case 5:
+                  return String.class;
+                case 6:
+                  return Integer.class;
+                case 7:
+                  return Integer.class;
+            }
+            
+            return null;
       }
  }

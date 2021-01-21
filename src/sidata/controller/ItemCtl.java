@@ -551,7 +551,8 @@ public class ItemCtl {
                     resultSet.getString("user_mobile_num"),
                     resultSet.getString("user_email"),
                     resultSet.getString("user_institution"),
-                    resultSet.getInt("user_status")
+                    resultSet.getInt("user_status"),
+                    resultSet.getString("regis_number")
                 ));
             }
             resultSet.close();
@@ -904,7 +905,8 @@ public class ItemCtl {
                     resultSet.getString("user_mobile_num"),
                     resultSet.getString("user_email"),
                     resultSet.getString("user_institution"),
-                    resultSet.getInt("user_status")
+                    resultSet.getInt("user_status"),
+                    resultSet.getString("regis_number")
                 ));
             }
             resultSet.close();

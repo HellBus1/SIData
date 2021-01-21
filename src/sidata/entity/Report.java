@@ -5,6 +5,7 @@
  */
 package sidata.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,13 +14,13 @@ import java.util.List;
  */
 public class Report {
     
-    private Assessment assessment;
-    private List<QualityParameter> qualityParameter;
+    private Assessment assessment = new Assessment();
+    private List<QualityParameter> qualityParameter = new ArrayList<>();
     
-//    public Report(){
-//        
-//    }
-    
+    public Report() {
+        
+    }
+        
     public Report(Assessment assessment, List<QualityParameter> qualityParameter){
         this.assessment = assessment;
         this.qualityParameter = qualityParameter;

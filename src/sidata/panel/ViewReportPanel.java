@@ -8,6 +8,8 @@ package sidata.panel;
 import com.google.gson.Gson;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +22,10 @@ import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import sidata.MainPage;
 import sidata.abstraction.FinalItemTableModel;
+import sidata.controller.ItemCtl;
 import sidata.controller.ReportHandler;
 import sidata.entity.Assessment;
+import sidata.entity.Assignment;
 import sidata.entity.Device;
 import sidata.entity.Operator;
 import sidata.entity.QualityParameter;
@@ -55,6 +59,10 @@ public class ViewReportPanel extends javax.swing.JPanel {
     List<String> devices = new ArrayList<>();
     List<String> elements = new ArrayList<>();
     List<String> operators = new ArrayList<>();
+    
+    private ItemCtl itemCtl;
+    
+    Report reporting;
     /**
      * Creates new form ViewDataMaster
      */
@@ -80,6 +88,7 @@ public class ViewReportPanel extends javax.swing.JPanel {
         jButton1 = new javax.swing.JButton();
         printBtn = new javax.swing.JButton();
         idReport = new javax.swing.JLabel();
+        itemCtl = new ItemCtl();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -88,6 +97,27 @@ public class ViewReportPanel extends javax.swing.JPanel {
         viewReportLabel.setText("View Report");
         viewReportLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         viewReportLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        
+        sampleList.addAll(itemCtl.getListSampleType(""));
+        testingDevice.addAll(itemCtl.getListDevice(""));
+        deviceList.addAll(itemCtl.getListDevice(""));
+        simpleElementList.addAll(itemCtl.getListSampleElement(""));
+        operatorList.addAll(itemCtl.getListOperator(""));
+        qp.addAll(itemCtl.getListQualityParamter(""));
+        
+        for(SampleType type : sampleList){
+            typeList.add(type.getStId() + " " + type.getStName());
+        }
+        for(Device device : testingDevice){
+            testingDevices.add(device.getDeviceId() + " " + device.getDeviceName());
+            devices.add(device.getDeviceId() + " " + device.getDeviceName());
+        }
+        for(Operator operator : operatorList){
+            operators.add(operator.getId() + " " + operator.getName());
+        }
+        for(SampleElement element : simpleElementList){
+            elements.add(element.getSeId() + " " + element.getSeName());
+        }
         
         addDialog = new JDialog(topFrame, "Detail Report", true);
         reportList.addAll(this.handler.getListReport(""));
@@ -110,8 +140,31 @@ public class ViewReportPanel extends javax.swing.JPanel {
         jScrollPane1.setViewportView(jTable1);
 
         jButton1.setText("View Assignment");
+        jButton1.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(final MouseEvent e) {
+                if (e.getClickCount() == 1) {
+                     showAssignmentList();
+                }
+            }
+        });
 
         printBtn.setText("Print Report");
+        printBtn.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(final MouseEvent e) {
+                if (e.getClickCount() == 1) {
+                    PrinterJob printerJob = PrinterJob.getPrinterJob();
+                    if (printerJob.printDialog()) {
+                        try {printerJob.print();}
+                        catch (PrinterException exc) {
+                            System.out.println(exc);
+                         }
+                     }   
+                }
+            }
+        });
+        
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -149,6 +202,23 @@ public class ViewReportPanel extends javax.swing.JPanel {
         );
     }
     
+    private void showAssignmentList() {
+        List<Assignment> assignments = new ArrayList<>();
+        JDialog assignmentDialog = new JDialog();
+        String [] columnNames = { "Assignment ID", "Assessment ID", "Assignment Name" };
+        
+        assignments.addAll(this.handler.getListAssignment(Integer.valueOf(idReport.getText())));
+        
+        JTable assignmentTable = new JTable();
+        assignmentTable.setModel(new FinalItemTableModel(assignments, columnNames));
+        JScrollPane jScroll = new JScrollPane();
+        jScroll.setViewportView(assignmentTable);
+        
+        assignmentDialog.setSize(400, 300);
+        assignmentDialog.add(jScroll);
+        assignmentDialog.setVisible(true);
+    }
+    
     private void setTableListener() {
         jTable1.addMouseListener(new MouseAdapter() {
             @Override
@@ -159,13 +229,19 @@ public class ViewReportPanel extends javax.swing.JPanel {
                     final int column = jTable.getSelectedColumn();
                     final String valueInCell = (String)jTable.getValueAt(row, 0).toString();
                     
+                    for(Report report : reportList){
+                        if(report.getAssessment().getAssessmentId() == Integer.valueOf(jTable.getValueAt(row, 0).toString())){
+                            reporting = new Report(report.getAssessment(), report.getQualityParameter());
+                            break;
+                        }
+                    }
 //                    addDetailModalComponent(new SampleElement(
 //                        Integer.valueOf(jTable.getValueAt(row, 0).toString()),
 //                        jTable.getValueAt(row, 1).toString(),
 //                        jTable.getValueAt(row, 2).toString()    
 //                    ));
 //                    
-//                    id.setText(String.valueOf(Integer.valueOf(jTable.getValueAt(row, 0).toString())));
+                    idReport.setText(String.valueOf(Integer.valueOf(jTable.getValueAt(row, 0).toString())));
                     showForm();
                     
                     System.out.println(valueInCell);
@@ -175,14 +251,29 @@ public class ViewReportPanel extends javax.swing.JPanel {
     }
     
     private void showForm() {
-
+        System.out.println(operators.size());
         assessmentForm = new AssessmentForm(typeList, testingDevices, devices, elements, operators, qp, (assm, ids) -> {
-            
-        });
+            try {
+                this.updateReport(assm, ids);
+            } catch (ParseException ex) {
+                Logger.getLogger(ViewReportPanel.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }, true, reporting);
 //        JPanel jpanel = new JPanel();
         JScrollPane js = new JScrollPane(assessmentForm, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         this.addDialog.setSize(600, 800);
         this.addDialog.add(js);
+        this.addDialog.setVisible(true);
+    }
+    
+    private void updateReport(Assessment params, List<Integer> qualityParamIndex) throws ParseException { 
+        if(this.handler.updateAssessment(params, qualityParamIndex)){
+            jTable1 = new javax.swing.JTable();
+            jTable1.setModel(new FinalItemTableModel(assessmentList, columnName));
+            setTableListener();
+            jScrollPane1.setViewportView(jTable1);
+            this.addDialog.setVisible(false);
+        }
     }
 
     /**

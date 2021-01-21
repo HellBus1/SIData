@@ -45,8 +45,8 @@ public class ViewOperatorPanel extends javax.swing.JPanel {
     private JDialog addNewOperatorDialog, detailOperator;
     JFrame topFrame;
     
-    private Label lblName, lblPosition, lblMobile, lblEmail, lblInstitution;
-    private JTextField txtName, txtMobile, txtEmail, txtInstitution;
+    private Label lblName, lblPosition, lblMobile, lblEmail, lblInstitution, lblRegNumber;
+    private JTextField txtName, txtMobile, txtEmail, txtInstitution, txtRegNumber;
     private JComboBox dropPosition;
     
     public ViewOperatorPanel() {
@@ -163,6 +163,7 @@ public class ViewOperatorPanel extends javax.swing.JPanel {
         lblMobile = new Label("Mobile");
         lblEmail = new Label("Email");
         lblInstitution = new Label("Institution");
+        lblRegNumber = new Label("Registration Number");
         
         // Textfield initialization
         txtName = new JTextField(16);
@@ -312,7 +313,8 @@ public class ViewOperatorPanel extends javax.swing.JPanel {
                         jTable.getValueAt(row, 3).toString(),
                         jTable.getValueAt(row, 4).toString(),
                         jTable.getValueAt(row, 5).toString(),
-                        Integer.valueOf(jTable.getValueAt(row, 6).toString())
+                        Integer.valueOf(jTable.getValueAt(row, 6).toString()),
+                        jTable.getValueAt(row, 7).toString()
                     ));
                     idOperator.setText(String.valueOf(Integer.valueOf(jTable.getValueAt(row, 0).toString())));
                     detailOperator.setVisible(true);
@@ -336,7 +338,7 @@ public class ViewOperatorPanel extends javax.swing.JPanel {
         System.out.println(operator.getName());
         
         Label lblName, lblPosition, lblMobile, lblEmail, lblInstitution;
-        JTextField txtName, txtMobile, txtEmail, txtInstitution;
+        JTextField txtName, txtMobile, txtEmail, txtInstitution, txtRegNumber;
         JComboBox dropPosition;
 
         JPanel mainPanel = new JPanel(new GridLayout(0, 2));
@@ -366,6 +368,11 @@ public class ViewOperatorPanel extends javax.swing.JPanel {
         txtInstitution = new JTextField(16);
         txtInstitution.setText(operator.getInstitution());
         txtInstitution.setEnabled(false);
+        
+        
+        txtRegNumber  = new JTextField();
+        txtRegNumber.setText(String.valueOf(operator.getRegisnNumber()));
+        txtRegNumber.setEnabled(false);
         
         // Combobox initialization
         dropPosition = new JComboBox(s1);

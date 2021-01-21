@@ -21,6 +21,7 @@ import sidata.entity.Assessment;
 import sidata.entity.Device;
 import sidata.entity.Operator;
 import sidata.entity.QualityParameter;
+import sidata.entity.Report;
 import sidata.entity.SampleElement;
 import sidata.entity.Standard;
 import sidata.entity.Unit;
@@ -41,6 +42,8 @@ public class AssessmentForm extends javax.swing.JPanel {
     private List<Integer> listId = new ArrayList<>();
     private String [] columnName = {"Qp ID", "Qp Standard", "Qp Unit", "Qp Parameter", "Qp Analysis Result", "Qp Testing Method", "Qp Notes", "Qp Description"};
     private AddAssessment assmFunc;
+    boolean isEdit;
+    private Report report;
             
      /**
      * Creates new form AssessmentForm
@@ -58,7 +61,9 @@ public class AssessmentForm extends javax.swing.JPanel {
             List<String> elements, 
             List<String> operators,
             List<QualityParameter> qp,
-            AddAssessment assmFunc) {
+            AddAssessment assmFunc,
+            boolean isEdit,
+            Report report) {
         this.typeList = typeList;
         this.testingDevices = testingDevices;
         this.devices = devices;
@@ -66,7 +71,13 @@ public class AssessmentForm extends javax.swing.JPanel {
         this.operators = operators;
         this.parameters.addAll(qp);
         this.assmFunc = assmFunc;
-        myCustomInitComponent();
+        this.isEdit = isEdit;
+        this.report = report;
+        if(isEdit){
+            myCustomEditInitComponent();   
+        }else{
+            myCustomInitComponent();
+        }
 //        initComponents();
     }
     
@@ -387,6 +398,259 @@ public class AssessmentForm extends javax.swing.JPanel {
     
     public interface AddAssessment {
         public void execute(Assessment assm, List<Integer> ids);
+    }
+    
+    private void myCustomEditInitComponent() {
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jButton2 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable2 = new javax.swing.JTable();
+        addQualityParams = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTable3 = new javax.swing.JTable();
+        addAssessment = new javax.swing.JButton();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        id = new JLabel();
+        
+        txtCode = new javax.swing.JTextField();
+        txtCode.setText(this.report.getAssessment().getAssmCode());
+        
+        
+        txtLocation = new javax.swing.JTextField();
+        txtLocation.setText("");
+        
+        txtSamplingID = new javax.swing.JTextField();
+        txtSamplingID.setText(String.valueOf(this.report.getAssessment().getSampleElement().getSeId()));
+        
+        txtRegis = new javax.swing.JTextField();
+        txtRegis.setText(String.valueOf(this.report.getAssessment().getUser().getRegisnNumber()));
+        
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
+
+        txtDate = new javax.swing.JFormattedTextField(df);
+        txtDate.setText(new Timestamp(System.currentTimeMillis()).toString());
+        txtTestingDate = new javax.swing.JFormattedTextField(df);
+        txtTestingDate.setText(this.report.getAssessment().getTestDate());
+        
+        jButton2.setText("jButton2");
+        jLabel1.setText("Code");
+        jLabel2.setText("Sample Type");
+        jLabel3.setText("Date");
+        jLabel4.setText("Testing Date");
+        jLabel5.setText("Testing Device");
+        jLabel6.setText("Device");
+        jLabel7.setText("Location");
+        jLabel8.setText("Sampling ID");
+        jLabel9.setText("Sample Element");
+        jLabel11.setText("Assignment Registration");
+        jLabel12.setText("Operator");
+        jLabel13.setText("Photos");
+
+        comboSampleType = new javax.swing.JComboBox(this.typeList.toArray());
+        comboDevice1 = new javax.swing.JComboBox(this.testingDevices.toArray());
+        comboDevice2 = new javax.swing.JComboBox(this.devices.toArray());
+        comboSample = new javax.swing.JComboBox(this.elements.toArray());
+        comboOperator = new javax.swing.JComboBox(this.operators.toArray());
+        
+        
+        resParameters.addAll(this.report.getQualityParameter());
+
+
+        jTable2.setModel(new FinalItemTableModel(this.resParameters, columnName));
+        jTable2.setName("added_quality_params");
+        jScrollPane2.setViewportView(jTable2);
+
+        addQualityParams.setText("Add Quality Parameter");
+        addQualityParams.addMouseListener(
+            new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    if (e.getClickCount() == 1) {
+//                        System.out.println(resParameters.size());
+                        if(!resParameters.contains(qualityParameter)){
+                            listId.add(qualityParameter.getQpId());
+                            resParameters.add(qualityParameter);   
+                        }
+                        resetTable();
+                    }
+                }
+            }
+        );
+
+        jTable3.setModel(new FinalItemTableModel(this.parameters, columnName));
+        this.setTableListener();
+        jScrollPane3.setViewportView(jTable3);
+
+        addAssessment.setText("Edit Report");
+        addAssessment.addMouseListener(
+            new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    if (e.getClickCount() == 1) {
+
+                        Operator user = new Operator();
+                        user.setName(comboOperator.getSelectedItem().toString());
+                        
+                        Device device = new Device();
+                        device.setDeviceName(comboDevice2.getSelectedItem().toString());
+                        
+                        Standard standard = new Standard();
+                        standard.setStandardName(comboOperator.getSelectedItem().toString());
+                        
+                        SampleElement sampleElement = new SampleElement();
+                        sampleElement.setSeName(comboSample.getSelectedItem().toString());
+                        
+                        Assessment assessment = new Assessment(
+                            0,
+                            user,
+                            device,
+                            standard,
+                            sampleElement,
+                            txtDate.getText(),
+                            txtRegis.getText(),
+                            txtCode.getText()
+                        );
+                        assmFunc.execute(assessment, listId);
+                    }
+                }
+            }
+        );
+
+        jLabel10.setText("Quality Parameter");
+
+        jLabel14.setText("Associated Quality Parameter");
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel8)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel9))
+                        .addGap(63, 63, 63)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtLocation)
+                            .addComponent(txtSamplingID)
+                            .addComponent(comboSampleType, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(comboDevice1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(comboDevice2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(comboSample, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtCode)
+                            .addComponent(txtDate)
+                            .addComponent(txtTestingDate)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel11)
+                            .addComponent(jLabel12))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtRegis)
+                            .addComponent(comboOperator, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 526, Short.MAX_VALUE)
+                    .addComponent(jScrollPane3)
+                    .addComponent(addAssessment, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel13)
+                            .addComponent(addQualityParams)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel10)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(id))
+                            .addComponent(jLabel14))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(txtCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(comboSampleType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(txtDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(txtTestingDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(comboDevice1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(comboDevice2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(txtLocation, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(txtSamplingID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(comboSample, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel11)
+                    .addComponent(txtRegis, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel12)
+                    .addComponent(comboOperator, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jLabel13)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel14)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10)
+                    .addComponent(id))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(addQualityParams)
+                .addGap(36, 36, 36)
+                .addComponent(addAssessment, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
     }
 
     /**
