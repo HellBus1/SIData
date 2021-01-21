@@ -5,14 +5,23 @@
  */
 package sidata.panel;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import sidata.controller.ProfileHandler;
 import sidata.database.UserStatic;
+import sidata.entity.Assessment;
+import sidata.entity.Assignment;
+import sidata.entity.Operator;
 
 /**
  *
  * @author syubban
  */
 public class ViewProfilePanel extends javax.swing.JPanel {
-
+    ProfileHandler handler = new ProfileHandler();
     /**
      * Creates new form ViewDataMaster
      */
@@ -22,7 +31,7 @@ public class ViewProfilePanel extends javax.swing.JPanel {
     }
     
     private void myCustomInitComponents(){
-         viewProfileLabel = new javax.swing.JLabel();
+        viewProfileLabel = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -32,29 +41,22 @@ public class ViewProfilePanel extends javax.swing.JPanel {
         jLabel7 = new javax.swing.JLabel();
         
         txtID = new javax.swing.JTextField();
-        txtID.setText(String.valueOf(UserStatic.getUserId()));
         txtID.setEditable(false);
         txtID.setEnabled(false);
         
         txtName = new javax.swing.JTextField();
-        txtName.setText(UserStatic.getUserName());
         
         txtPosition = new javax.swing.JTextField();
-        txtPosition.setText(this.positionConverter(UserStatic.getUserPositionId()));
         txtPosition.setEditable(false);
         txtPosition.setEnabled(false);
         
         txtMobile = new javax.swing.JTextField();
-        txtMobile.setText(UserStatic.getUserMobile());
         
         txtEmail = new javax.swing.JTextField();
-        txtEmail.setText(UserStatic.getUserEmail());
         
         txtInstitution = new javax.swing.JTextField();
-        txtInstitution.setText(UserStatic.getUserInstitution());
         
         txtStatus = new javax.swing.JTextField();
-        txtStatus.setText(String.valueOf(UserStatic.getUserStatus()));
         
         editBtn = new javax.swing.JButton();
 
@@ -83,6 +85,28 @@ public class ViewProfilePanel extends javax.swing.JPanel {
         txtEmail.setToolTipText("");
 
         editBtn.setText("Edit");
+        editBtn.addMouseListener(
+            new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    if (e.getClickCount() == 1) {
+                        Operator operator = new Operator();
+                        operator.setId(Integer.valueOf(txtID.getText()));
+                        operator.setName(txtName.getText());
+                        operator.setMobilenumber(txtMobile.getText());
+                        operator.setEmail(txtEmail.getText());
+                        operator.setInstitution(txtInstitution.getText());
+                        operator.setStatus(Integer.valueOf(txtStatus.getText()));
+                        
+                        if(handler.updateUser(operator)){
+                            initValue();
+                        }
+                    }
+                }
+            }
+        );
+        
+        initValue();
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -174,6 +198,16 @@ public class ViewProfilePanel extends javax.swing.JPanel {
                 break;
         }
         return positioning;
+    }
+    
+    private void initValue() {
+        txtID.setText(String.valueOf(UserStatic.getUserId()));
+        txtName.setText(UserStatic.getUserName());
+        txtPosition.setText(this.positionConverter(UserStatic.getUserPositionId()));
+        txtMobile.setText(UserStatic.getUserMobile());
+        txtEmail.setText(UserStatic.getUserEmail());
+        txtInstitution.setText(UserStatic.getUserInstitution());
+        txtStatus.setText(String.valueOf(UserStatic.getUserStatus()));
     }
 
     /**

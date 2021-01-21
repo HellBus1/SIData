@@ -8,7 +8,7 @@ package sidata;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JFrame;
-import sidata.controller.LoginController;
+import sidata.controller.ProfileHandler;
 
 /**
  *
@@ -16,7 +16,7 @@ import sidata.controller.LoginController;
  */
 public class LoginPage extends javax.swing.JFrame {
     JFrame topFrame;
-    LoginController controller = new LoginController();
+    ProfileHandler controller = new ProfileHandler();
     /**
      * Creates new form LoginPage
      */
@@ -27,16 +27,19 @@ public class LoginPage extends javax.swing.JFrame {
     
     private void myCustomInitComponents(){
         txtEmail = new javax.swing.JTextField();
+        txtEmail.setText("johan@gmail.com");
+        
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        
         txtPassword = new javax.swing.JTextField();
+        txtPassword.setText("123");
+        
         loginBtn = new javax.swing.JButton();
         topFrame = this;
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        txtEmail.setText("");
 
         jLabel1.setText("Email");
         jLabel1.setToolTipText("");
@@ -45,8 +48,6 @@ public class LoginPage extends javax.swing.JFrame {
         jLabel2.setText("SIData");
 
         jLabel3.setText("Password");
-
-        txtPassword.setText("");
 
         loginBtn.setText("Login");
         loginBtn.addMouseListener(

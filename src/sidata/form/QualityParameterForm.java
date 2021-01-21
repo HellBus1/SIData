@@ -50,14 +50,26 @@ public class QualityParameterForm extends javax.swing.JPanel {
         comboUnit = new JComboBox(this.theUnitList.toArray());
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        
         txtParameter = new javax.swing.JTextField();
+        txtParameter.setText("");
+        
         txtAnalysis = new javax.swing.JTextField();
+        txtAnalysis.setText("");
+        
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
+        
         txtTesting = new javax.swing.JTextField();
+        txtTesting.setText("");
+        
         txtNotes = new javax.swing.JTextField();
+        txtNotes.setText("");
+        
         txtDescription = new javax.swing.JTextField();
+        txtDescription.setText("");
+        
         btnAdd = new javax.swing.JButton();
         btnEdit = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();

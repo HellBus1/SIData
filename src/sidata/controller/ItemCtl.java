@@ -1,5 +1,6 @@
 package sidata.controller;
 
+import com.google.gson.Gson;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -539,7 +540,7 @@ public class ItemCtl {
             if("".equals(params)){
                 preparedStatement = dbhandler.getConnection().prepareStatement("select * from user where user_position_id = 2");
             }else{
-                preparedStatement = dbhandler.getConnection().prepareStatement("select * from user where user_name like ? or user_position_id = 2");
+                preparedStatement = dbhandler.getConnection().prepareStatement("select * from user where user_name like ? and user_position_id = 2");
                 preparedStatement.setString(1, "%" + params + "%");
             }
             resultSet = preparedStatement.executeQuery();
@@ -555,6 +556,7 @@ public class ItemCtl {
                     resultSet.getString("regis_number")
                 ));
             }
+          
             resultSet.close();
         }catch(SQLException se){
             //Handle errors for JDBC
@@ -752,7 +754,7 @@ public class ItemCtl {
                 preparedStatement = dbhandler.getConnection().prepareStatement("select * from `quality_parameter`" + 
                         " inner join `standard` on `quality_parameter`.qp_standard_id = `standard`.standard_id" + 
                         " inner join `unit` on `quality_parameter`.qp_unit_id = `unit`.unit_id"+
-                        " where device_name like ?");
+                        " where qp_parameter like ?");
                 preparedStatement.setString(1, "%" + params + "%");
             }
             resultSet = preparedStatement.executeQuery();
@@ -776,6 +778,7 @@ public class ItemCtl {
                     resultSet.getString("qp_description")
                 ));
             }
+            System.out.println(new Gson().toJson(qualityParams));
             resultSet.close();
         }catch(SQLException se){
             //Handle errors for JDBC

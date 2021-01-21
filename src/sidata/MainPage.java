@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 import javax.swing.*;
 import sidata.controller.ItemCtl;
 import sidata.controller.ReportHandler;
+import sidata.database.UserStatic;
 import sidata.entity.Assessment;
 import sidata.entity.Device;
 import sidata.entity.Operator;
@@ -100,9 +101,16 @@ public class MainPage extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         createReport = new javax.swing.JLabel();
         viewReport = new javax.swing.JLabel();
+        if(UserStatic.getUserPositionId() == 3){
+            viewReport.setVisible(false);
+            createReport.setVisible(false);
+        }
         viewOperator = new javax.swing.JLabel();
         viewAssignment = new javax.swing.JLabel();
         viewData = new javax.swing.JLabel();
+        if(UserStatic.getUserPositionId() != 3){
+            viewData.setVisible(false);
+        }
         viewProfile = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();

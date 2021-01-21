@@ -31,6 +31,7 @@ import javax.swing.SwingUtilities;
 import sidata.abstraction.FinalItemTableModel;
 import sidata.abstraction.FinalTableModel;
 import sidata.controller.AssignmentCtl;
+import sidata.database.UserStatic;
 import sidata.entity.Assessment;
 import sidata.entity.Assignment;
 import sidata.entity.Unit;
@@ -110,6 +111,10 @@ public class ViewAssignmentPanel extends javax.swing.JPanel {
         idReport.setText("-1");
 
         cancelAssignment.setText("Cancel Assignment");
+        if(UserStatic.getUserPositionId() == 1){
+            cancelAssignment.setVisible(false);
+            addNewAssignment.setVisible(false);
+        }
         cancelAssignment.addMouseListener(
             new MouseAdapter() {
                 @Override
@@ -258,7 +263,10 @@ public class ViewAssignmentPanel extends javax.swing.JPanel {
         mainPanel.add(txtName);
 
         panel.add(mainPanel);
-        panel.add(edit);
+        
+        if(UserStatic.getUserPositionId() != 1){
+            panel.add(edit);
+        }
         
         edit.addMouseListener(
             new MouseAdapter() {
@@ -367,9 +375,6 @@ public class ViewAssignmentPanel extends javax.swing.JPanel {
     public void resetContent() {
         assignmentList.clear();
         assignmentList.addAll(this.assignmentCtl.getListAssignment());
-        
-        Gson gson = new Gson();
-        System.out.println(gson.toJson(assignment));
         
         Component[] componentList = this.getComponents();
 
